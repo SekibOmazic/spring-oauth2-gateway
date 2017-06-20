@@ -1,0 +1,19 @@
+package com.comsysto.dcc.auth.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.security.Principal;
+
+@Controller
+public class UserController {
+
+    @RequestMapping("/user")
+    @ResponseBody
+    public Principal user(Principal user) {
+        System.out.println("User: " + user);
+        return user;
+    }
+
+}

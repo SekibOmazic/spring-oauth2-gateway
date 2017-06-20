@@ -1,0 +1,42 @@
+server:
+  port: 9090
+  contextPath: /uaa
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+# External OAuth2 provider configuration - GitHub
+github:
+  client:
+    clientId: b2dc3f70031c842d748b
+    clientSecret: 1f1edc7aa12eee7f5d6c250822fabe62c46c4aeb
+    accessTokenUri: https://github.com/login/oauth/access_token
+    userAuthorizationUri: https://github.com/login/oauth/authorize
+    clientAuthenticationScheme: form
+  resource:
+    userInfoUri: https://api.github.com/user
+
+
+security:
+  oauth2:
+    resource:
+      jwt:
+        key-value: changeMEforPROD
+
+spring:
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: jdbc:h2:mem:auth-server
+  cloud:
+    config:
+      enabled: false
+  h2:
+    console:
+      enabled: true
+      path: /console
+  zipkin:
+    enabled: false
