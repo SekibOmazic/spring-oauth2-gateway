@@ -19,6 +19,7 @@ github:
 
 
 security:
+  sessions: stateless
   oauth2:
     resource:
       jwt:
@@ -28,15 +29,15 @@ spring:
   jpa:
     show-sql: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
   datasource:
-    url: jdbc:h2:mem:auth-server
+    url: jdbc:h2:file:./data/sample;AUTO_SERVER=TRUE #jdbc:h2:mem:auth-server
   cloud:
     config:
       enabled: false
   h2:
     console:
       enabled: true
-      path: /console
+      #path: /console
   zipkin:
     enabled: false

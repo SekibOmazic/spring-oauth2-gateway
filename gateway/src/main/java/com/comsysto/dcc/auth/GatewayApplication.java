@@ -6,7 +6,18 @@ import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.*;
+import org.springframework.security.web.session.SessionManagementFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.WebUtils;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @SpringBootApplication
 @EnableZuulProxy
@@ -26,9 +37,58 @@ public class GatewayApplication extends WebSecurityConfigurerAdapter {
 				.antMatchers("/index.html", "/home.html", "/", "/login").permitAll()
 				.anyRequest().authenticated()
 				.and()
-			.csrf()
-				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-			// @formatter:on
+
+            .csrf().csrfTokenRepository(csrfTokenRepository())
+                .and()
+                .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class); // Register csrf filter.
+
+			//.csrf()
+			//	.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+
+        // @formatter:on
 	}
+
+    private Filter csrfHeaderFilter() {
+        return new OncePerRequestFilter() {
+
+            @Override
+            protected void doFilterInternal(HttpServletRequest request,
+                                            HttpServletResponse response,
+                                            FilterChain filterChain) throws ServletException, IOException {
+
+                CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+                if (csrf != null) {
+                    Cookie cookie = WebUtils.getCookie(request, "XSRF-TOKEN");
+                    String token = csrf.getToken();
+                    if (cookie == null || token != null
+                            && !token.equals(cookie.getValue())) {
+
+                        // Token is being added to the XSRF-TOKEN cookie.
+                        cookie = new Cookie("XSRF-TOKEN", token);
+                        cookie.setPath("/");
+                        response.addCookie(cookie);
+                    }
+                }
+                filterChain.doFilter(request, response);
+/*
+                CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
+
+                if (token != null) {
+                    response.setHeader("X-CSRF-HEADER", token.getHeaderName());
+                    response.setHeader("X-CSRF-PARAM", token.getParameterName());
+                    response.setHeader("X-CSRF-TOKEN" , token.getToken());
+                }
+                filterChain.doFilter(request, response);
+*/
+            }
+        };
+    }
+
+    private CsrfTokenRepository csrfTokenRepository() {
+        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+        repository.setHeaderName("X-XSRF-TOKEN");
+        return repository;
+    }
+
 }
 

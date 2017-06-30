@@ -12,6 +12,7 @@
 		<module>authserver</module>
 		<module>gateway</module>
 		<module>resource</module>
+		<module>admin</module>
 	</modules>
 
 </project>

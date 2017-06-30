@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import static com.comsysto.dcc.auth.client.Client.DEFAULT_AUTHORIZATION_GRANT_TYPES;
@@ -24,6 +25,7 @@ public class AuthUserFixture implements CommandLineRunner {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private Set<Role> defaultRoles;
+    private Set<Role> adminRoles;
     private final ClientRepository clientRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -45,7 +47,14 @@ public class AuthUserFixture implements CommandLineRunner {
         clientRepository.deleteAll();
 
 
-        defaultRoles = Collections.singleton(roleRepository.save(new Role("USER", "User", "DemoApp")));
+        Role userRole = roleRepository.save(new Role("USER", "User", "DemoApp"));
+        defaultRoles = Collections.singleton(userRole);
+
+        Role adminRole = roleRepository.save(new Role("ADMIN", "Admin", "DemoApp"));
+        adminRoles = new HashSet<Role>() {{
+            this.add(userRole);
+            this.add(adminRole);
+        }};
 
         createUsers();
         createClients();
@@ -53,10 +62,15 @@ public class AuthUserFixture implements CommandLineRunner {
 
     private void createUsers() {
         userRepository.save(createUser("test.user@test.org", "$2a$06$xIjq.n0kw3YATtlicLM5EOfVxRxttR8TYiRV4P3.Pd50pYolfucgm"));
+        userRepository.save(createAdminUser("admin.user@test.org", "$2a$06$xIjq.n0kw3YATtlicLM5EOfVxRxttR8TYiRV4P3.Pd50pYolfucgm"));
     }
 
     private User createUser(String username, String password) {
         return new User(username, password, defaultRoles);
+    }
+
+    private User createAdminUser(String username, String password) {
+        return new User(username, password, adminRoles);
     }
 
 

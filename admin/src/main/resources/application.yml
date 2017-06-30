@@ -1,0 +1,43 @@
+server:
+  port: 9100
+  contextPath: /admin
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+# Configure the public key to use for verifying the incoming JWT tokens
+security:
+  # enable-csrf: false
+
+  oauth2:
+    resource:
+      jwt:
+        keyValue: changeMEforPROD
+      #userInfoUri: http://localhost:9090/uaa/user
+
+
+# json
+spring:
+  jackson:
+    serialization-inclusion: true
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    url: jdbc:h2:file:./data/sample;AUTO_SERVER=TRUE #jdbc:h2:mem:auth-server
+  h2:
+    console:
+      enabled: true
+      #path: /console
+
+  #thymeleaf
+  thymeleaf:
+    check-template-location: true
+    prefix: classpath:templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    content-type: text/html
+    cache: false

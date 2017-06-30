@@ -36,21 +36,10 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
     private UserDetailsService userDetailsService;
 
 
-    //@Bean
-    //public JwtAccessTokenConverter jwtAccessTokenConverter() {
-    //    JwtAccessTokenConverter converter = new EnhancedJwtAccessTokenConverter(clientsDetailsService);
-    //    converter.setSigningKey(jwtSigningKey);
-    //    return converter;
-    //}
-
-
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        KeyPair keyPair = new KeyStoreKeyFactory(
-                new ClassPathResource("keystore.jks"), "foobar".toCharArray())
-                .getKeyPair("test");
-        converter.setKeyPair(keyPair);
+        JwtAccessTokenConverter converter = new EnhancedJwtAccessTokenConverter(clientsDetailsService);
+        converter.setSigningKey(jwtSigningKey);
         return converter;
     }
 

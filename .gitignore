@@ -29,3 +29,6 @@ target/
 resource/oauth2-resource.iml
 gateway/oauth2-gateway.iml
 authserver/oauth2-authserver.iml
+admin/oauth2-admin.iml
+
+data/

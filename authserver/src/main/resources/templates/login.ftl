@@ -15,6 +15,7 @@
                 <p><a href="login/github">Login with GitHub</a><b>Not ready yet!!!</b></p>
             </fieldset>
 			<div> try with <b>test.user@test.org/password</b> </div>
+            <div> or <b>admin.user@test.org/password</b> </div>
 		  <div class="form-group">
 		    <label for="username">Username:</label>
 		    <input type="text" class="form-control" id="username" name="username"/>

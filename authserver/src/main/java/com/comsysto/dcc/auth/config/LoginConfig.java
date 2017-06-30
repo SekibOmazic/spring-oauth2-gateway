@@ -47,13 +47,6 @@ public class LoginConfig extends WebSecurityConfigurerAdapter {
         auth.parentAuthenticationManager(authenticationManager);
 
         auth.userDetailsService(userDetailsService).passwordEncoder(encoder);
-        /*
-        auth
-                .inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER")
-                .and()
-                .withUser("admin").password("admin").roles("USER", "ADMIN");
-        */
     }
 }
 

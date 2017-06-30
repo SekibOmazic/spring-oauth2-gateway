@@ -6,27 +6,32 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 @SpringBootApplication
 @RestController
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class ResourceApplication {
+//@EnableWebSecurity // Should inject CSRF Token into the form, but nothing happens
+public class AdminApplication {
 
-	@RequestMapping("/")
-	@PreAuthorize("hasAuthority('USER')")
+
+    @RequestMapping("/")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public Message home(@RequestHeader("authorization") String authHeader) {
-		return new Message("Hello World");
+		return new Message("Hello Admin");
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(ResourceApplication.class, args);
+		SpringApplication.run(AdminApplication.class, args);
 	}
 
 }
