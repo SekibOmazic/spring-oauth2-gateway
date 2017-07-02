@@ -1,3 +1,35 @@
+
+<!doctype html>
+<html>
+
+    <head>
+<!--
+        <base href="/admin">
+-->
+        <title>Admin App</title>
+        <link
+                href="css/angular-bootstrap.css"
+                rel="stylesheet">
+        <style type="text/css">
+            [ng\:cloak], [ng-cloak], .ng-cloak {
+                display: none !important;
+            }
+        </style>
+    </head>
+
+    <body ng-app="admin" ng-cloak class="ng-cloak">
+
+        <div ng-view class="container"></div>
+
+        <script src="js/angular-bootstrap.js" type="text/javascript"></script>
+        <script src="js/admin.js"></script>
+        <script src="js/userService.js"></script>
+        <script src="js/controllers.js"></script>
+    </body>
+
+</html>
+
+<!--
 <!DOCTYPE HTML>
 <html>
     <head>
@@ -8,3 +40,4 @@
     <body>
     </body>
 </html>
+-->

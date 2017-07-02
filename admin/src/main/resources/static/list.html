@@ -1,0 +1,37 @@
+<div>
+    <h1>List Users</h1>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Account Non Expired</th>
+                <th>Enabled</th>
+                <th>Account Non Locked</th>
+                <th>Credentials Non Expired</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="user in users track by user.id">
+                <td>
+                    <a ng-href="#!/delete/{{user.id}}" class="btn btn-danger btn-xs">delete</a>
+                </td>
+                <td>{{user.id}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.password}}</td>
+                <td>{{user.accountNonExpired}}</td>
+                <td>{{user.enabled}}</td>
+                <td>{{user.accountNonLocked}}</td>
+                <td>{{user.credentialsNonExpired}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>
+        <a href="#!/add" class="btn btn-primary">Add New User</a>
+    </p>
+
+</div>

@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-//@EnableWebSecurity // Should inject CSRF Token into the form, but nothing happens
+@EnableWebSecurity // Should inject CSRF Token into the form, but nothing happens
 public class AdminApplication {
 
 
-    @RequestMapping("/")
+    @RequestMapping("/message")
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public Message home(@RequestHeader("authorization") String authHeader) {
 		return new Message("Hello Admin");

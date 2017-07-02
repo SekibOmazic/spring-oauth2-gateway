@@ -81,26 +81,92 @@
 			<artifactId>httpclient</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <!--
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-rest-core</artifactId>
-            <version>3.0.0.DATAREST-1088-SNAPSHOT</version>
-        </dependency>
-        -->
     </dependencies>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<start-class>de.o2.dcc.auth.AdminApplication</start-class>
 		<java.version>1.8</java.version>
+		<wro4j.version>1.8.0</wro4j.version>
+		<angularjs.version>1.6.4</angularjs.version>
+		<bootstrap.version>3.3.7-1</bootstrap.version>
+		<jquery.version>3.1.1</jquery.version>
 	</properties>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>${project.build.directory}/generated-resources</directory>
+			</resource>
+		</resources>
 		<plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<!-- Serves *only* to filter the wro.xml so it can get an absolute
+                          path for the project -->
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/wro</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/wro</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>ro.isdc.wro4j</groupId>
+				<artifactId>wro4j-maven-plugin</artifactId>
+				<version>${wro4j.version}</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
+					<cssDestinationFolder>${project.build.directory}/generated-resources/static/css</cssDestinationFolder>
+					<jsDestinationFolder>${project.build.directory}/generated-resources/static/js</jsDestinationFolder>
+					<wroFile>${project.build.directory}/wro/wro.xml</wroFile>
+					<extraConfigFile>${project.build.directory}/wro/wro.properties</extraConfigFile>
+					<contextFolder>${project.build.directory}/wro</contextFolder>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.webjars</groupId>
+						<artifactId>jquery</artifactId>
+						<version>${jquery.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.webjars</groupId>
+						<artifactId>bootstrap</artifactId>
+						<version>${bootstrap.version}</version>
+					</dependency>
+                    <dependency>
+                        <groupId>org.webjars</groupId>
+                        <artifactId>angularjs</artifactId>
+                        <version>${angularjs.version}</version>
+                    </dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>

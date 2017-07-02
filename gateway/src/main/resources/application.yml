@@ -29,11 +29,11 @@ zuul:
     resource:
       path: /resource/**
       url: http://localhost:9000/resource
-      sensitiveHeaders: Cookie, Set-Cookie
+      #sensitiveHeaders: Cookie, Set-Cookie
     admin:
       path: /admin/**
       url: http://localhost:9100/admin
-      sensitiveHeaders:
+      #sensitiveHeaders:
     user:
       path: /user/**
       url: http://localhost:9090/uaa/user

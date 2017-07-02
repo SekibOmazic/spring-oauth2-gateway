@@ -47,6 +47,10 @@ public class User {
 
     @PersistenceConstructor
     public User() {
+        this.accountNonLocked = true;
+        this.accountNonExpired = true;
+        this.credentialsNonExpired = true;
+        this.enabled = true;
     }
 
     public User(String username, String password, Set<Role> roles) {

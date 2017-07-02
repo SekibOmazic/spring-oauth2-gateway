@@ -3,13 +3,16 @@ package com.comsysto.dcc.auth.controller;
 import com.comsysto.dcc.auth.user.User;
 import com.comsysto.dcc.auth.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -36,8 +39,37 @@ public class UserController {
     
     @PostMapping("/save")
     public void usersSubmit(@ModelAttribute User user, HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException {
+        String encodedPassword = encodeUserPassword(user.getPassword());
+        user.setPassword(encodedPassword);
         userRepository.save(user);
         ControllerHelper.constructRedirectURL("/user/list", request, response);
     }
-    
+
+
+    @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<User> getUsers() {
+        return userRepository.findAll();
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public User getUser(@PathVariable Long id) {
+        return userRepository.findOne(id);
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    public void deleteUser(@PathVariable Long id) {
+        userRepository.delete(id);
+    }
+
+    @RequestMapping(value = "/add", method=RequestMethod.POST)
+    public User create(@RequestBody User user) {
+        String encodedPassword = encodeUserPassword(user.getPassword());
+        user.setPassword(encodedPassword);
+        return userRepository.save(user);
+    }
+
+    private String encodeUserPassword(String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(password);
+    }
 }
