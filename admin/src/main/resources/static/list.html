@@ -1,4 +1,8 @@
-<div>
+<div ng-show="forbidden">
+    <h1>You have no sufficient rights to access this application</h1>
+</div>
+
+<div ng-show="!forbidden">
     <h1>List Users</h1>
     <table class="table table-bordered table-striped">
         <thead>

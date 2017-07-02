@@ -13,9 +13,13 @@
     function UserListController($scope, UserService) {
         $scope.users = [];
 
-        UserService.getAll().then(function (response) {
-            $scope.users = response.data;
-        });
+        UserService.getAll().then(
+            function (response) {
+                $scope.users = response.data;
+                $scope.forbidden = false;
+            }, function (error) {
+                $scope.forbidden = true;
+            });
     }
 
 
@@ -47,7 +51,7 @@
             }
         );
 
-        $scope.remove = function() {
+        $scope.remove = function () {
             UserService.remove($scope.user.id).then(function (response) {
                 $location.path('/');
             });
