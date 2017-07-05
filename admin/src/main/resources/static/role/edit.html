@@ -1,0 +1,54 @@
+<h1>Edit role</h1>
+
+<div>
+
+    <form name="roleEdit" novalidate ng-submit="edit()">
+        <div class="form-horizontal">
+            <hr/>
+
+            <div class="bg-danger validationErrors" ng-show="validationErrors">
+                <ul>
+                    <li ng-repeat="error in validationErrors">{{error}}</li>
+                </ul>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Role ID</label>
+                <div class="col-md-10">
+                    <div>{{role.id}}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Role display name</label>
+                <div class="col-md-10">
+                    <input name="name"
+                           type="text"
+                           class="form-control"
+                           placeholder="Enter role name"
+                           ng-model="role.displayName"
+                           ng-required="true"
+                           ng-minlength="3" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Application this role belongs to</label>
+                <div class="col-md-10">
+                    <div>{{role.application}}</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Update" ng-disabled="roleEdit.$invalid" class="btn btn-primary"/>
+                    <a href="#!/role/list" class="btn btn-default">Cancel</a>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+
+    <hr />
+    <div><a href="#!/role/list">Back to List</a></div>
+
+</div>

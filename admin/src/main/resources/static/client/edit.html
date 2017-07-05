@@ -1,0 +1,87 @@
+<h1>Edit client</h1>
+
+<div>
+
+    <form name="clientEdit" novalidate ng-submit="edit()">
+        <div class="form-horizontal">
+            <hr/>
+
+            <div class="bg-danger validationErrors" ng-show="validationErrors">
+                <ul>
+                    <li ng-repeat="error in validationErrors">{{error}}</li>
+                </ul>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Client ID</label>
+                <div class="col-md-10">
+                    <div>{{client.id}}</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Client Secret</label>
+                <div class="col-md-10">
+                    <div>{{client.secret}}</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Enabled</label>
+                <div class="col-md-10">
+                    <input name="name"
+                           type="checkbox"
+                           ng-model="client.enabled" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Application name</label>
+                <div class="col-md-10">
+                    <input name="name"
+                           type="text"
+                           class="form-control"
+                           placeholder="Enter application name"
+                           ng-model="client.name"
+                           ng-required="true"
+                           ng-minlength="3" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Application description</label>
+                <div class="col-md-10">
+                    <input name="description"
+                           type="text"
+                           class="form-control"
+                           placeholder="Application description is optional"
+                           ng-model="client.description" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Authorization callback URL</label>
+                <div class="col-md-10">
+                    <input name="callback"
+                           type="text"
+                           class="form-control"
+                           placeholder="Your application's callback URL"
+                           ng-model="client.callback"
+                           ng-required="true"
+                           ng-minlength="10" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Update" ng-disabled="clientEdit.$invalid" class="btn btn-primary"/>
+                    <a href="#!/client/list" class="btn btn-default">Cancel</a>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+
+    <hr />
+    <div><a href="#!/client/list">Back to List</a></div>
+
+</div>

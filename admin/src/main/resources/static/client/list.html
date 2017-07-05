@@ -1,0 +1,46 @@
+<div ng-show="forbidden">
+    <h1>You have no sufficient rights to access this application</h1>
+</div>
+
+<div ng-show="!forbidden">
+    <h1>List of registered clients</h1>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                <th>ID</th>
+                <th>Secret</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Enabled</th>
+                <th>Authorization callback URL</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="client in clients track by client.id">
+                <td>
+                    <a ng-href="#!/client/delete/{{client.id}}" class="btn btn-danger btn-xs">delete</a>
+                    <a ng-href="#!/client/edit/{{client.id}}" class="btn btn-info btn-xs">edit</a>
+                </td>
+                <td>{{client.id}}</td>
+                <td>{{client.secret}}</td>
+                <td>{{client.name}}</td>
+                <td>{{client.description}}</td>
+                <td>{{client.enabled}}</td>
+                <td>{{client.callback}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>
+        <a href="#!/client/add" class="btn btn-primary">Add New Client</a>
+    </p>
+
+    <p>
+        <a href="#!/">Users</a>
+    </p>
+    <p>
+        <a href="#!/role/list">Roles</a>
+    </p>
+</div>

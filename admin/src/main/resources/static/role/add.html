@@ -1,0 +1,65 @@
+<h1>Add new role</h1>
+
+<div>
+
+    <form name="roleAdd" novalidate ng-submit="add()">
+        <div class="form-horizontal">
+            <hr/>
+
+            <div class="bg-danger validationErrors" ng-show="validationErrors">
+                <ul>
+                    <li ng-repeat="error in validationErrors">{{error}}</li>
+                </ul>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Role name</label>
+                <div class="col-md-10">
+                    <input name="id"
+                           type="text"
+                           class="form-control"
+                           placeholder="Enter unique role name"
+                           ng-model="role.id"
+                           ng-required="true"
+                           ng-minlength="3" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Role display name</label>
+                <div class="col-md-10">
+                    <input name="name"
+                           type="text"
+                           class="form-control"
+                           placeholder="Enter role name"
+                           ng-model="role.displayName"
+                           ng-required="true"
+                           ng-minlength="3" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Application for this role</label>
+                <div class="col-md-10">
+                    <input name="description"
+                           type="text"
+                           class="form-control"
+                           placeholder="Application this role belongs to"
+                           ng-model="role.application" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" ng-disabled="roleAdd.$invalid" class="btn btn-primary"/>
+                    <a href="#!/role/list" class="btn btn-default">Cancel</a>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+
+    <hr />
+    <div><a href="#!/role/list">Back to List</a></div>
+
+</div>

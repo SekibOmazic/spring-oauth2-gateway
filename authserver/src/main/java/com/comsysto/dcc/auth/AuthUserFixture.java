@@ -76,10 +76,26 @@ public class AuthUserFixture implements CommandLineRunner {
 
     private void createClients() {
 
-        clientRepository.save(new Client("acme", "Acme client", "acmesecret",
-                DEFAULT_AUTHORIZATION_GRANT_TYPES, DEFAULT_SCOPE, true));
+        clientRepository.save(
+                new Client("acme",
+                        "Acme client",
+                        "acmesecret",
+                        DEFAULT_AUTHORIZATION_GRANT_TYPES,
+                        DEFAULT_SCOPE,
+                        true,
+                        "Simple App",
+                        "http://localhost:8080/admin/")
+        );
 
-        clientRepository.save(new Client("myauthserver", "Some cool client", "verysecretpassword",
-                DEFAULT_AUTHORIZATION_GRANT_TYPES, DEFAULT_SCOPE, true));
+        clientRepository.save(
+                new Client("myauthserver",
+                        "Some cool client",
+                        "verysecretpassword",
+                        DEFAULT_AUTHORIZATION_GRANT_TYPES,
+                        DEFAULT_SCOPE,
+                        true,
+                        "Test App",
+                        "http://localhost:8080/admin/")
+        );
     }
 }

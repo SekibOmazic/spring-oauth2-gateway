@@ -36,6 +36,10 @@ public class Role implements GrantedAuthority {
         return displayName;
     }
 
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
     public String getApplication() {
         return application;
     }
