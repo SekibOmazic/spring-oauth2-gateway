@@ -31,13 +31,23 @@
             var userObj = {
                 username: user.username,
                 password: user.password,
-                enabled: user.enabled
+                enabled: user.enabled,
+                roles: user.roles
             };
 
             return $http({
                 method: 'POST',
                 url: '/admin/user/add',
                 data: userObj
+            });
+        };
+
+        // update user
+        service.update = function (user) {
+            return $http({
+                method: 'PUT',
+                url: '/admin/user/' + user.id,
+                data: user
             });
         };
 

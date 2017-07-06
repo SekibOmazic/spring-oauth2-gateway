@@ -8,19 +8,12 @@
         .controller('RoleEditController', RoleEditController)
         .controller('RoleDeleteController', RoleDeleteController);
 
+
     /* Role List Controller  */
-    RoleListController.$inject = ['$scope', 'RoleService'];
+    RoleListController.$inject = ['$scope', 'roles'];
 
-    function RoleListController($scope, RoleService) {
-        $scope.roles = [];
-
-        RoleService.getAll().then(
-            function (response) {
-                $scope.roles = response.data;
-                $scope.forbidden = false;
-            }, function (error) {
-                $scope.forbidden = true;
-            });
+    function RoleListController($scope, roles) {
+        $scope.roles = roles.data;
     }
 
 
@@ -40,21 +33,14 @@
     }
 
     /* Role Edit Controller */
-    RoleEditController.$inject = ['$scope', '$routeParams', '$location', 'RoleService'];
+    RoleEditController.$inject = ['$scope', '$location', 'role', 'RoleService'];
 
-    function RoleEditController($scope, $routeParams, $location, RoleService) {
-        RoleService.getRole($routeParams.id).then(
-            function (response) {
-                $scope.role = response.data;
-            },
-            function (error) {
-                _showValidationErrors($scope, error);
-            }
-        );
+    function RoleEditController($scope, $location, role, RoleService) {
+        $scope.role = role.data;
 
         $scope.edit = function () {
             RoleService.update($scope.role).then(
-                function (response) {
+                function () {
                     $location.path('/role/list');
                 }, function (error) {
                     _showValidationErrors($scope, error);
@@ -64,20 +50,13 @@
     }
 
     /* Role Delete Controller  */
-    RoleDeleteController.$inject = ['$scope', '$routeParams', '$location', 'RoleService'];
+    RoleDeleteController.$inject = ['$scope', '$location', 'role', 'RoleService'];
 
-    function RoleDeleteController($scope, $routeParams, $location, RoleService) {
-        RoleService.getRole($routeParams.id).then(
-            function (response) {
-                $scope.role = response.data;
-            },
-            function (error) {
-                _showValidationErrors($scope, error);
-            }
-        );
+    function RoleDeleteController($scope, $location, role, RoleService) {
+        $scope.role = role.data;
 
         $scope.remove = function () {
-            RoleService.remove($scope.role.id).then(function (response) {
+            RoleService.remove($scope.role.id).then(function () {
                 $location.path('/role/list');
             });
         };

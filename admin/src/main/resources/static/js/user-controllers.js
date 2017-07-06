@@ -5,30 +5,36 @@
         .module('admin')
         .controller('UserListController', UserListController)
         .controller('UserAddController', UserAddController)
+        .controller('UserEditController', UserEditController)
         .controller('UserDeleteController', UserDeleteController);
 
     /* User List Controller  */
-    UserListController.$inject = ['$scope', 'UserService'];
+    UserListController.$inject = ['$scope', 'users'];
 
-    function UserListController($scope, UserService) {
-        $scope.users = [];
-
-        UserService.getAll().then(
-            function (response) {
-                $scope.users = response.data;
-                $scope.forbidden = false;
-            }, function (error) {
-                $scope.forbidden = true;
-            });
+    function UserListController($scope, users) {
+        $scope.users = users.data;
     }
 
 
     /* User Add Controller */
-    UserAddController.$inject = ['$scope', '$location', 'UserService'];
+    UserAddController.$inject = ['$scope', '$location', 'UserService', 'roles'];
 
-    function UserAddController($scope, $location, UserService) {
-        $scope.user = {};
+    function UserAddController($scope, $location, UserService, roles) {
+        $scope.user = { selectedRoles: {}, roles: [] };
+
+        $scope.roles = roles.data;
+
         $scope.add = function () {
+
+            for (var p in $scope.user.selectedRoles) {
+                var r = $scope.roles.find(function(role) {
+                    return role.id === p;
+                });
+                if (r) {
+                    $scope.user.roles.push(r);
+                }
+            }
+
             UserService.addUser($scope.user).then(
                 function () {
                     $location.path('/');
@@ -38,21 +44,55 @@
         };
     }
 
-    /* User Delete Controller  */
-    UserDeleteController.$inject = ['$scope', '$routeParams', '$location', 'UserService'];
+    /* User Edit Controller */
+    UserEditController.$inject = ['$scope', '$location', 'user', 'roles', 'UserService' ];
 
-    function UserDeleteController($scope, $routeParams, $location, UserService) {
-        UserService.getUser($routeParams.id).then(
-            function (response) {
-                $scope.user = response.data;
-            },
-            function (error) {
-                _showValidationErrors($scope, error);
+    function UserEditController($scope, $location, user, roles, UserService) {
+        $scope.roles = roles.data; // all available roles
+        $scope.user = user.data;
+
+        //$scope.selection = {}; //chosen roles
+        $scope.selection = $scope.roles.reduce(function (acc, ro) {
+            var foundRole = $scope.user.roles.find(function(userRole) {
+                return userRole.id === ro.id;
+            });
+
+            acc[ro.id] = !!foundRole;
+
+            return acc;
+        }, {});
+
+        $scope.edit = function () {
+
+            $scope.user.roles.length = 0;
+
+            for (var p in $scope.selection) {
+                var r = $scope.roles.find(function(role) {
+                    return role.id === p && $scope.selection[p];
+                });
+                if (r) {
+                    $scope.user.roles.push(r);
+                }
             }
-        );
+
+            UserService.update($scope.user).then(
+                function () {
+                    $location.path('/');
+                }, function (error) {
+                    _showValidationErrors($scope, error);
+                }
+            );
+        };
+    }
+
+    /* User Delete Controller  */
+    UserDeleteController.$inject = ['$scope', '$location', 'user', 'UserService'];
+
+    function UserDeleteController($scope, $location, user, UserService) {
+        $scope.user = user.data;
 
         $scope.remove = function () {
-            UserService.remove($scope.user.id).then(function (response) {
+            UserService.remove($scope.user.id).then(function () {
                 $location.path('/');
             });
         };

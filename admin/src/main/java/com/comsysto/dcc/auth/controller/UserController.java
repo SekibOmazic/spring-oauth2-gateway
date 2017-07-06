@@ -1,5 +1,7 @@
 package com.comsysto.dcc.auth.controller;
 
+import com.comsysto.dcc.auth.role.Role;
+import com.comsysto.dcc.auth.role.RoleRepository;
 import com.comsysto.dcc.auth.user.User;
 import com.comsysto.dcc.auth.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class UserController {
     
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
     
     @GetMapping("/list")
     public ModelAndView usersAll(ModelAndView model) {
@@ -68,8 +73,30 @@ public class UserController {
         return userRepository.save(user);
     }
 
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    public User update(@PathVariable Long id, @RequestBody User user) {
+        User fromDB = validate(id);
+
+        String encodedPassword = encodeUserPassword(user.getPassword());
+        fromDB.setPassword(encodedPassword);
+        fromDB.setEnabled(user.isEnabled());
+
+        // add only updated roles
+        fromDB.getRoles().clear();
+        fromDB.getRoles().addAll(user.getRoles());
+
+        return userRepository.save(fromDB);
+    }
+
     private String encodeUserPassword(String password) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.encode(password);
     }
+
+    private User validate(Long id) {
+        return this.userRepository
+                .findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+    }
+
 }

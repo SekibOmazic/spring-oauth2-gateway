@@ -9,18 +9,10 @@
         .controller('ClientDeleteController', ClientDeleteController);
 
     /* Client List Controller  */
-    ClientListController.$inject = ['$scope', 'ClientService'];
+    ClientListController.$inject = ['$scope', 'clients'];
 
-    function ClientListController($scope, ClientService) {
-        $scope.clients = [];
-
-        ClientService.getAll().then(
-            function (response) {
-                $scope.clients = response.data;
-                $scope.forbidden = false;
-            }, function (error) {
-                $scope.forbidden = true;
-            });
+    function ClientListController($scope, clients) {
+        $scope.clients = clients.data;
     }
 
 
@@ -40,21 +32,14 @@
     }
 
     /* Client Edit Controller */
-    ClientEditController.$inject = ['$scope', '$routeParams', '$location', 'ClientService'];
+    ClientEditController.$inject = ['$scope', '$location', 'client', 'ClientService'];
 
-    function ClientEditController($scope, $routeParams, $location, ClientService) {
-        ClientService.getClient($routeParams.id).then(
-            function (response) {
-                $scope.client = response.data;
-            },
-            function (error) {
-                _showValidationErrors($scope, error);
-            }
-        );
+    function ClientEditController($scope, $location, client, ClientService) {
+        $scope.client = client.data;
 
         $scope.edit = function () {
             ClientService.update($scope.client).then(
-                function (response) {
+                function () {
                     $location.path('/client/list');
                 }, function (error) {
                     _showValidationErrors($scope, error);
@@ -64,20 +49,13 @@
     }
 
     /* Client Delete Controller  */
-    ClientDeleteController.$inject = ['$scope', '$routeParams', '$location', 'ClientService'];
+    ClientDeleteController.$inject = ['$scope', '$location', 'client', 'ClientService'];
 
-    function ClientDeleteController($scope, $routeParams, $location, ClientService) {
-        ClientService.getClient($routeParams.id).then(
-            function (response) {
-                $scope.client = response.data;
-            },
-            function (error) {
-                _showValidationErrors($scope, error);
-            }
-        );
+    function ClientDeleteController($scope, $location, client, ClientService) {
+        $scope.client = client.data;
 
         $scope.remove = function () {
-            ClientService.remove($scope.client.id).then(function (response) {
+            ClientService.remove($scope.client.id).then(function () {
                 $location.path('/client/list');
             });
         };
