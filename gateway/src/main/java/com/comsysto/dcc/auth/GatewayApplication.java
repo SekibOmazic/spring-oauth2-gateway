@@ -82,7 +82,7 @@ public class GatewayApplication extends WebSecurityConfigurerAdapter {
         repository.setHeaderName("X-XSRF-TOKEN");
         return repository;
     }
-
+/*
     @Bean
     public CorsFilter corsFilter() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -100,5 +100,6 @@ public class GatewayApplication extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
+*/
 }
 
