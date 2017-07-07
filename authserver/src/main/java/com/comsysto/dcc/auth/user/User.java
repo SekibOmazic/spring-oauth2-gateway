@@ -11,17 +11,6 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
 
-import com.comsysto.dcc.auth.client.Client;
-import com.comsysto.dcc.auth.role.Role;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.*;
-import java.util.Collection;
-import java.util.Set;
-
 @Entity(name = "users")
 public class User {
 
